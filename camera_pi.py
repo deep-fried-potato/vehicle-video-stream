@@ -1,6 +1,8 @@
 from time import time
 import numpy as np
+import picamera
 import cv2
+import io
 
 class Camera(object):
     def __init__(self):
