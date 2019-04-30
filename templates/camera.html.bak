@@ -29,82 +29,25 @@
     <button onclick="move('Forward')" type="button" name="button">Forward</button><br>
     <button onclick="move('Left')" type="button" name="button">Left</button>
     <button onclick="move('Right')" type="button" name="button">Right</button><br>
-    <button onclick="move('Backward')" type="button" name="button">STOP</button><br>
-    <button onclick="move('Straight')" type="button" name="button">Straight</button>
+    <button onclick="move('Backward')" type="button" name="button">Stop</button><br>
+    <button onclick="move('Straight')" type="button" name="button">Center Rudder</button>
+
 	<h3> Return to main page ==> <a href="/"class="button">RETURN</a></h3>
 	<hr>
   </body>
   <script>
-
-    let controller = null;
-
-
-    function getButtons() {
-      let buttons = controller.buttons;
-
-      // A
-      if (buttons[0].pressed) return 'Backward';
-
-      // B
-      if (buttons[1].pressed) return 'Right';
-
-      // X
-      if (buttons[2].pressed) return 'Left';
-
-      // Y
-      if (buttons[3].pressed) return 'Forward';
-
-      // Right Button (R1)
-      if (buttons[5].pressed) return 'Straight'
-
-
-
-      return 0;
-    }
-
-    window.setInterval(() => {
-      if (!controller) return;
-      let direction = 0;
-      direction = getButtons()
-
-      if(direction) {
-        console.log(direction);
-        move(direction);
-      }
-
-    }, 100)
-
-    window.addEventListener("gamepadconnected", function(e) {
-      console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-        e.gamepad.index, e.gamepad.id,
-        e.gamepad.buttons.length, e.gamepad.axes.length);
-      console.log(e.gamepad.mapping)
-      controller = e.gamepad;
-    });
-
-    window.addEventListener("gamepaddisconnected", function(e) {
-      console.log("Gamepad disconnected from index %d: %s",
-        e.gamepad.index, e.gamepad.id);
-
-      controller = null;
-    });
-
     function b64(e){var t="";var n=new Uint8Array(e);var r=n.byteLength;for(var i=0;i<r;i++){t+=String.fromCharCode(n[i])}return window.btoa(t)}
     var move;
     $(document).ready(function() {
-
-      console.log(navigator.getGamepads());
-
-
       namespace = '/client';
       var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 
       move = function (arg){
-        socket.emit("move",{"direction":arg});
+        socket.emit("move",{"direction":arg})
       };
 
     socket.on('image2Client', function(data) {
-      $("#sensordata").html("sensor value: " + data.sensor);
+      $("#sensordata").html("sensor value: " + data.sensor)
       $("#img").attr("src","data:image/png;base64,"+b64(data.image));
     });
   });

@@ -48,10 +48,21 @@ def cam():
       'time': timeNow
 	}
 	return render_template('camera.html', **templateData)
-
+@app.route("/vr")
+def vr():
+	'''Virtual Reality'''
+	return render_template('vr.html')
+@app.route("/control")
+def control():
+	'''Only Control'''
+	return render_template('control.html')
 @socketio.on("move",namespace="/client")
 def relayMove(data):
 	socketio.emit("move",data,namespace="/cam")
+
+@socketio.on("vr_orient",namespace="/client")
+def relayVRorient(data):
+	socketio.emit("vr_orient",data,namespace="/cam")
 
 @socketio.on("camImage",namespace="/cam")
 def relayImage(data):

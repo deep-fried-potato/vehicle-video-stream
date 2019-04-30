@@ -20,5 +20,6 @@ body{
 }
 
 img{
-	display: display: inline-block
+	display: display: inline-block;
+	transform: rotate(180deg);
 }

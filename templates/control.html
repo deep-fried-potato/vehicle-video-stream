@@ -21,10 +21,7 @@
     </style>
   </head>
   <body>
-    <h1>Live Streaming</h1> <p id="count" ></p>
-    <h3><img id="img" src="" ></h3>
-    <h3>{{ time }}</h3>
-    <p id="sensordata"></p>
+    <h1>Control Page</h1> <p id="count" ></p>
     <hr>
     <button onclick="move('Forward')" type="button" name="button">Forward</button><br>
     <button onclick="move('Left')" type="button" name="button">Left</button>
@@ -102,11 +99,6 @@
       move = function (arg){
         socket.emit("move",{"direction":arg});
       };
-
-    socket.on('image2Client', function(data) {
-      $("#sensordata").html("sensor value: " + data.sensor);
-      $("#img").attr("src","data:image/png;base64,"+b64(data.image));
-    });
   });
 
 </script>

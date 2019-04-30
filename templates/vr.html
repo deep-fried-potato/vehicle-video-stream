@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+      .img{
+        float: left;
+        width: 50%;
+        transform: rotate(180deg);
+      }
+    </style>
+  </head>
+  <body>
+
+    <img class="img" style="" src="" >
+    <img class="img" style="" src="" >
+    <p id="disp">HAHA</p>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    function b64(e){var t="";var n=new Uint8Array(e);var r=n.byteLength;for(var i=0;i<r;i++){t+=String.fromCharCode(n[i])}return window.btoa(t)}
+    prevDir = 0;
+    $(document).ready(function() {
+
+      namespace = '/client';
+      var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+    socket.on('image2Client', function(data) {
+      $(".img").attr("src","data:image/png;base64,"+b64(data.image));
+    });
+    if ('DeviceOrientationEvent' in window) {
+    window.addEventListener('deviceorientation', deviceOrientationHandler, false);
+  } else {
+    document.getElementById('logoContainer').innerText = 'Device Orientation API not supported.';
+  }
+
+  function deviceOrientationHandler (eventData) {
+
+    var tiltLR = eventData.gamma;
+    var tiltFB = eventData.beta;
+    var dir = (eventData.alpha+90)%360;
+    dir = (dir*10)/180 + 2.5
+    $("#disp").html("LR :"+Math.round(tiltLR)+" FB :"+Math.round(tiltFB)+" Dir :"+dir)
+    //dir = dir % 12.5;
+    if(Math.abs(dir-prevDir)>0.5 && dir <12.5 && dir>2.5){
+      socket.emit("vr_orient",{"Orientation":dir})
+      prevDir = dir
+    }
+
+  }
+
+
+  });
+
+  </script>
+  </body>
+</html>
