@@ -14,6 +14,6 @@ python-socketio==3.1.2
 requests==2.21.0
 six==1.12.0
 urllib3==1.24.1
-websockets==7.0
+websockets==9.1
 Werkzeug==0.15.3
 yarg==0.1.9
